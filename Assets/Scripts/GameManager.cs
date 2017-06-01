@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour {
         hearts += 1;
         if (hearts <= heartTab.Length)
         {
-            heartTab[heartTab.Length - hearts].color = Color.cyan;
+            heartTab[heartTab.Length - hearts].color = Color.red;
         }
     }
     public void DelHearts(int heartNumber)

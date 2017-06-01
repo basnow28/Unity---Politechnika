@@ -13,11 +13,12 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     private bool isWalking = false;
     private bool isFacingRight;
     private bool isJumping;
+    private bool isGrounded = true;
 
     public float jumpForce = 12f;
 
     private Vector2 startPosition;
-    private float killOffset = 1f;
+    private float killOffset = 2f;
 
     private int score = 0;
     private int keyNumber = 0;
@@ -74,9 +75,6 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
                 isWalking = false;
                 isJumping = true;
             }
-            anim.SetBool("IsGrounded", IsGrounded());
-            anim.SetBool("IsWalking", isWalking);
-            anim.SetBool("IsJumping", isJumping);
         }
     }
 
@@ -92,7 +90,6 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
         {
             if (GameManager.instance.keysCompleted)
             {
-                GameObject.Find("Meta").SendMessage("Finnish");
                 GameManager.instance.LevelCompleted();
             }
 
@@ -133,6 +130,15 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
         {
             GameManager.instance.GameOver();
         }
+
+       /* if (other.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }*/
     }
 
     private void Flip()
@@ -152,7 +158,7 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
 
     void Jump()
     {
-        if (IsGrounded())
+        //if (IsGrounded())
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 

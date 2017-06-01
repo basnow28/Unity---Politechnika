@@ -19,6 +19,10 @@ public class LevelGenerator : MonoBehaviour {
         shouldFinish = false;
         ShowPiece((LevelPieceBasic)Instantiate(startPlatformPrefab));
         AddStartPiece();
+        AddPiece();
+        AddPiece();
+        AddPiece();
+        AddPiece();
     }
     public void ShowPiece(LevelPieceBasic piece)
     {
@@ -29,11 +33,13 @@ public class LevelGenerator : MonoBehaviour {
             levelStartPoint.position.y - piece.exitPoint.localPosition.y);
         else
             piece.transform.position = new Vector2(
-            pieces[pieces.Count - 1].exitPoint.localPosition.x + pieces[pieces.Count -
-           1].startPoint.localPosition.x,
+            pieces[pieces.Count - 1].exitPoint.position.x + pieces[pieces.Count -
+           1].startPoint.localPosition.x+5f,
             pieces[pieces.Count - 1].exitPoint.position.y - pieces[pieces.Count -
            1].exitPoint.localPosition.y);
 
+
+        piece.gameObject.GetComponent<Rigidbody2D>();
         piece.enabled = true;
         pieces.Add(piece);
     }
@@ -44,7 +50,7 @@ public class LevelGenerator : MonoBehaviour {
     }
     public void AddPiece()
     {
-        int randomIndex = Random.Range(0, levelPrefabs.Count - 1);
+        int randomIndex = Random.Range(0, levelPrefabs.Count -1);
         LevelPieceBasic piece = (LevelPieceBasic)Instantiate(levelPrefabs[randomIndex]);
         ShowPiece(piece);
     }
