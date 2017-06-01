@@ -13,7 +13,6 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     private bool isWalking = false;
     private bool isFacingRight;
     private bool isJumping;
-    private bool isGrounded = true;
 
     public float jumpForce = 12f;
 
@@ -23,6 +22,11 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     private int score = 0;
     private int keyNumber = 0;
     private int lives = 3;
+
+    public Transform[] groundPoints;
+    public float groundRadius;
+    public LayerMask whatIsGround;
+    private bool isGrounded;
 
     // Use this for initialization    
     void Start()
@@ -34,6 +38,11 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody2D>();
         startPosition = this.transform.position;
+    }
+
+    void FixedUpdate()
+    {
+        isGrounded = IsGrounded();
     }
     void Update()
     {
@@ -71,11 +80,20 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
             }
             if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
             {
-                Jump();
                 isWalking = false;
+                isJumping = true;
+                Jump();
+            }
+            if (isGrounded && isJumping)
+            {
+                isGrounded = false;
                 isJumping = true;
             }
         }
+        anim.SetBool("IsGrounded", isGrounded);
+        anim.SetBool("IsWalking", isWalking);
+        anim.SetBool("IsJumping", isJumping);
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -151,14 +169,31 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
 
     bool IsGrounded()
     {
-        if (Physics2D.Raycast(this.transform.position, Vector2.down, 2f, groundLayer.value))
-            return true;
+        if (rigidBody.velocity.y <= 0)
+        {
+            foreach (Transform point in groundPoints)
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(point.position, groundRadius, whatIsGround);
+
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if(colliders[i].gameObject != gameObject)
+                    {
+                        return true;
+                    }  
+                }
+            }
+        }
         return false;
+      
+        /*if (Physics2D.Raycast(this.transform.position, Vector2.down, 2f, groundLayer.value))
+            return true;
+        return false;*/
     }
 
     void Jump()
     {
-        //if (IsGrounded())
+        if(IsGrounded())
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
