@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+    public Text highScoreLevel1Text;
+    public Text highScoreLevel2Text;
+
+    void Awake()
+    {
+        highScoreLevel1Text.text = "HighScore: " + PlayerPrefs.GetInt("HighScoreLevel1").ToString();
+        highScoreLevel2Text.text = "HighScore: " + PlayerPrefs.GetInt("HighScoreLevel2").ToString();
+    }
 
     private IEnumerator StartGame(string levelName)
     {

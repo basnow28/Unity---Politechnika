@@ -28,6 +28,9 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     public LayerMask whatIsGround;
     private bool isGrounded;
 
+    public AudioClip coinSound;
+    private AudioSource source;
+
     // Use this for initialization    
     void Start()
     {
@@ -38,6 +41,7 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody2D>();
         startPosition = this.transform.position;
+        source.GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -103,6 +107,7 @@ public class PlayerCondtrollerLevel1 : MonoBehaviour {
             score += 1;
             GameManager.instance.AddCoins(1);
             other.gameObject.SetActive(false);
+            source.PlayOneShot(coinSound, AudioListener.volume);
         }
         else if (other.CompareTag("Meta"))
         {

@@ -23,6 +23,9 @@ public class PlayerControllerLevel2 : MonoBehaviour {
     private int keyNumber = 0;
     private int lives = 3;
 
+    public AudioClip coinSound;
+    private AudioSource source;
+
     // Use this for initialization    
     void Start()
     {
@@ -33,6 +36,7 @@ public class PlayerControllerLevel2 : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody2D>();
         startPosition = this.transform.position;
+        source.GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -68,6 +72,7 @@ public class PlayerControllerLevel2 : MonoBehaviour {
             score += 1;
             GameManager.instance.AddCoins(1);
             other.gameObject.SetActive(false);
+            source.PlayOneShot(coinSound, AudioListener.volume);
         }
         else if (other.CompareTag("Meta"))
         {
